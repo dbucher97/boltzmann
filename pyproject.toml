@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "boltzmann"
+version = "0.1"
+description = ""
+authors = ["David Bucher <d.bucher97@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.24.2"
+matplotlib = "^3.7.1"
+jax = {extras = ["cpu"], version = "^0.4.7"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
