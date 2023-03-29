@@ -3,7 +3,9 @@ from matplotlib.animation import FuncAnimation
 
 import numpy as np
 
-from qaoa import qaoa
+from qaoa import qaoa, get_initial
+from qiskit_qaoa import qaoa as qiskit_qaoa
+from annealing_exact import get_svs
 
 N = 8
 
@@ -56,12 +58,24 @@ if __name__ == "__main__":
     x = np.linspace(-5, 5, 2**N)
     f = obj(x)
 
-    T = np.logspace(2, -2, 100)
-    bm = get_bm(T)
-    plot_anim(bm, "boltzmann", T, running="temp")
+    # T = np.logspace(2, -2, 100)
+    # bm = get_bm(T)
+    # plot_anim(bm, "boltzmann", T, running="temp")
 
     # Tfinal = 1000
     # steps = 10000
-    # _, y = qaoa(f, steps, Tfinal)
+    # y = qiskit_qaoa(f, steps, Tfinal)
     # rvar = np.linspace(0, Tfinal, steps)
-    # plot_anim(np.array(y), "qaoa", rvar, n=100, running="time")
+    # plot_anim(np.array(y), "qiskit_qaoa", rvar, n=100, running="time")
+
+    # p = get_initial(steps, Tfinal)
+    #
+    # plt.plot(p[:, 1], label="beta")
+    # plt.plot(p[:, 0], label="gamma")
+    #
+    # plt.savefig("schedule.png", dpi=300)
+
+    n = 100
+    res = get_svs(f, n, T=1e-5)
+    rvar = np.linspace(0, 1, n)
+    plot_anim(res, "exact_diagonalization_T=1e-5", rvar, n=n, running="s")
