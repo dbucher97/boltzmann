@@ -17,9 +17,12 @@ def get_initial(depth, T=1.0):
 x = np.linspace(-5, 5, 2**N)
 f = obj(x)
 
+
+def sig(x):
+    return 1/(1 + np.exp(-x))
+
 def qaoa(f, steps=100, T=10):
     N = int(np.log2(f.shape[0]))
-    params = get_initial(steps, T)
 
     qr = QuantumRegister(N)
     qc = QuantumCircuit(qr)
@@ -27,9 +30,14 @@ def qaoa(f, steps=100, T=10):
 
     qc.h(qr)
 
-    for i, p in enumerate(params):
-        qc.diagonal(np.exp(-1j * f * p[1]).tolist(), qr)
-        qc.rx(-p[0], qr)
+    for i in range(steps):
+        s = i / steps
+        k = 5
+        # s = np.array(1 - np.exp(-k * s)) / np.array(1 - np.exp(-k))
+        gamma = s * T / steps
+        beta = (1-s) * T / steps
+        qc.diagonal(np.exp(-1j * f * gamma).tolist(), qr)
+        qc.rx(-beta, qr)
 
         qc.save_statevector(f"{i}")
 
