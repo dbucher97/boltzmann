@@ -24,13 +24,26 @@ def get_svs(f, n=100, T=1e-3):
     s = np.linspace(0, 1, n)
     ves = []
 
+    # h0 = get_hamiltonian(f, 1)
+    # v, w = np.linalg.eigh(h0)
+    # x = np.argmin(v)
+    # print(v[x])
+    # print(w[:, x].conj().T @ h0 @ w[:, x])
+
+    ves = []
+
     for si in s:
         h = get_hamiltonian(f, si)
         v, w = np.linalg.eigh(h)
         vmin = np.min(v)
-        logz = -vmin / T + np.log(np.exp((-v + vmin) / T).sum())
-        p = -v / T - logz
-        p = np.exp(p)
-        vec = w.dot(np.sqrt(p)).flatten()
-        ves.append(vec ** 2)
+        if T == 0:
+            vec = w[:, np.argmin(v)]
+            # vec /= np.sqrt(np.sum(np.abs(vec) ** 2))
+            vec = vec.flatten()
+        else:
+            logz = -vmin / T + np.log(np.exp((-v + vmin) / T).sum())
+            p = -v / T - logz
+            p = np.exp(p)
+            vec = w.dot(np.sqrt(p)).flatten()
+        ves.append(np.abs(vec) ** 2)
     return np.array(ves).T

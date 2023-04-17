@@ -58,9 +58,9 @@ if __name__ == "__main__":
     x = np.linspace(-5, 5, 2**N)
     f = obj(x)
 
-    T = np.logspace(2, -2, 100)
-    bm = get_bm(T)
-    plot_anim(bm, "boltzmann", T, running="temp")
+    # T = np.logspace(2, -2, 100)
+    # bm = get_bm(T)
+    # plot_anim(bm, "boltzmann", T, running="temp")
 
     # Tfinal = 100
     # steps = 100
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     #
     # plt.savefig("schedule.png", dpi=300)
 
-    # n = 100
-    # res = get_svs(f, n, T=1e-3)
-    # rvar = np.linspace(0, 1, n)
-    # plot_anim(res, "exact_diagonalization_T=1e-3", rvar, n=n, running="s")
+    n = 100
+    res = get_svs(f, n, T=0)
+    rvar = np.linspace(0, 1, n)
+    plot_anim(res, "exact_diagonalization_T=0", rvar, n=n, running="s")
